@@ -16,14 +16,29 @@ namespace Selenium
         /// <summary>
         /// Create object without proxy
         /// </summary>
-        public CryptoCom() 
+        public CryptoCom(string host, int port, string login, string password) 
         {
             _driver = new ChromeDriver("C:\\Files\\");
-        }
-        public CryptoCom(string host, int port, string login, string password)
-        {            
             var options = new ChromeOptions();
             options.AddHttpProxy(host, port, login, password);
+        }
+        public CryptoCom(string host, string port)
+        {
+            var path = $"{host}:{port}";
+
+            var proxy = new Proxy();
+            proxy.HttpProxy = path;
+            proxy.SslProxy = path;
+            proxy.FtpProxy = path;
+            proxy.Kind = ProxyKind.Manual;
+            proxy.IsAutoDetect = false;
+
+            var options = new ChromeOptions()
+            {
+                Proxy = proxy
+            };
+            options.AddArgument("ignore-certificate-errors");  
+            
             _driver = new ChromeDriver("C:\\Files\\", options);                 
         }
 
@@ -31,11 +46,11 @@ namespace Selenium
 
         public void Start()
         {
-            _driver.Navigate().GoToUrl(@"https://crypto.com/price/warship-battles");
-            IWebElement query = _driver.FindElement(By.XPath("/html/body/div[1]/div[3]/div/div/div[4]/div[1]/div[3]/div[2]/button[1]"));
-            query.Click();          
+            _driver.Navigate().GoToUrl(@"https://socproxy.ru/ip");
+            //IWebElement query = _driver.FindElement(By.XPath("/html/body/div[1]/div[3]/div/div/div[4]/div[1]/div[3]/div[2]/button[1]"));
+            //query.Click();          
             //query.SendKeys(Keys.Enter);
-            Thread.Sleep(5000);
+            Thread.Sleep(50000);
 
             _driver.Quit();
         }
