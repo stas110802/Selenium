@@ -6,8 +6,13 @@ namespace Selenium
     {
         static void Main(string[] args)
         {
-            var beta = new CryptoCom();
-            beta.Start();
+            //var beta = new CryptoCom();
+            //beta.Start();
+
+            Linker linker = new Linker();
+            linker.PoxyIn();
+            linker.IpTest();
+           
         }
     }
 }
