@@ -11,18 +11,21 @@ using OpenQA.Selenium.Chrome.ChromeDriverExtensions;
 
 namespace Selenium
 {
-    public class CryptoCom
+    public class SeleniumWebDriver
     {
         /// <summary>
-        /// Create object without proxy
+        /// Create object with proxy autorization
         /// </summary>
-        public CryptoCom(string host, int port, string login, string password) 
+        public SeleniumWebDriver(string host, int port, string login, string password) 
         {
-            _driver = new ChromeDriver("C:\\Files\\");
+            _driver = new ChromeDriver($"{_location}\\Files\\");
             var options = new ChromeOptions();
             options.AddHttpProxy(host, port, login, password);
         }
-        public CryptoCom(string host, string port)
+        /// <summary>
+        /// Create object without proxy autorization
+        /// </summary>        
+        public SeleniumWebDriver(string host, string port)
         {
             var path = $"{host}:{port}";
 
@@ -37,16 +40,17 @@ namespace Selenium
             {
                 Proxy = proxy
             };
-            options.AddArgument("ignore-certificate-errors");  
+            options.AddArgument("ignore-certificate-errors");
             
-            _driver = new ChromeDriver("C:\\Files\\", options);                 
+            _driver = new ChromeDriver($"{_location}\\Files\\", options);                 
         }
 
+        private string _location = Environment.CurrentDirectory;
         private IWebDriver _driver;
 
-        public void Start()
+        public void ClickButton(string url, string xpath = null)
         {
-            _driver.Navigate().GoToUrl(@"https://socproxy.ru/ip");
+            _driver.Navigate().GoToUrl(url);
             //IWebElement query = _driver.FindElement(By.XPath("/html/body/div[1]/div[3]/div/div/div[4]/div[1]/div[3]/div[2]/button[1]"));
             //query.Click();          
             //query.SendKeys(Keys.Enter);
