@@ -13,6 +13,10 @@ namespace Selenium
 {
     public class SeleniumWebDriver
     {
+        public SeleniumWebDriver()
+        {
+            _driver = new ChromeDriver($"{_location}\\Files\\");
+        }
         /// <summary>
         /// Create object with proxy autorization
         /// </summary>
@@ -29,19 +33,21 @@ namespace Selenium
         {
             var path = $"{host}:{port}";
 
-            var proxy = new Proxy();
-            proxy.HttpProxy = path;
-            proxy.SslProxy = path;
-            proxy.FtpProxy = path;
-            proxy.Kind = ProxyKind.Manual;
-            proxy.IsAutoDetect = false;
+            var proxy = new Proxy
+            {
+                HttpProxy = path,
+                SslProxy = path,
+                FtpProxy = path,
+                Kind = ProxyKind.Manual,
+                IsAutoDetect = false
+            };
 
             var options = new ChromeOptions()
             {
                 Proxy = proxy
             };
             options.AddArgument("ignore-certificate-errors");
-            
+
             _driver = new ChromeDriver($"{_location}\\Files\\", options);                 
         }
 
@@ -51,11 +57,9 @@ namespace Selenium
         public void ClickButton(string url, string xpath = null)
         {
             _driver.Navigate().GoToUrl(url);
-            //IWebElement query = _driver.FindElement(By.XPath("/html/body/div[1]/div[3]/div/div/div[4]/div[1]/div[3]/div[2]/button[1]"));
-            //query.Click();          
-            //query.SendKeys(Keys.Enter);
-            Thread.Sleep(50000);
-
+            IWebElement query = _driver.FindElement(By.XPath(xpath));
+            query.Click();          
+            Thread.Sleep(20000);
             _driver.Quit();
         }
     }
